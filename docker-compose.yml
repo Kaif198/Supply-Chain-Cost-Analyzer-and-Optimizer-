@@ -1,0 +1,73 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:15-alpine
+    container_name: supply-chain-postgres
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-supply_chain_user}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-supply_chain_pass}
+      POSTGRES_DB: ${POSTGRES_DB:-supply_chain}
+    ports:
+      - '5432:5432'
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U ${POSTGRES_USER:-supply_chain_user}']
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - supply-chain-network
+
+  redis:
+    image: redis:7-alpine
+    container_name: supply-chain-redis
+    ports:
+      - '6379:6379'
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ['CMD', 'redis-cli', 'ping']
+      interval: 10s
+      timeout: 3s
+      retries: 5
+    networks:
+      - supply-chain-network
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: supply-chain-backend
+    environment:
+      DATABASE_URL: postgresql://${POSTGRES_USER:-supply_chain_user}:${POSTGRES_PASSWORD:-supply_chain_pass}@postgres:5432/${POSTGRES_DB:-supply_chain}?schema=public&connection_limit=20&pool_timeout=10
+      REDIS_URL: redis://redis:6379
+      JWT_SECRET: ${JWT_SECRET:-change-this-secret-in-production}
+      JWT_EXPIRES_IN: ${JWT_EXPIRES_IN:-24h}
+      PORT: 3000
+      NODE_ENV: ${NODE_ENV:-development}
+      CORS_ORIGIN: ${CORS_ORIGIN:-http://localhost:5173}
+    ports:
+      - '3000:3000'
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    volumes:
+      - ./backend/src:/app/src
+      - ./backend/prisma:/app/prisma
+    networks:
+      - supply-chain-network
+    restart: unless-stopped
+
+volumes:
+  postgres_data:
+    driver: local
+  redis_data:
+    driver: local
+
+networks:
+  supply-chain-network:
+    driver: bridge

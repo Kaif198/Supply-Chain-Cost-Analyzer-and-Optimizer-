@@ -1,0 +1,111 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background-color: #0f172a;
+  color: #e2e8f0;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #DC0032;
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #b00028;
+}
+
+/* Leaflet overrides for dark theme */
+.leaflet-container {
+  background-color: #1e293b;
+  font-family: 'Inter', sans-serif;
+}
+
+.leaflet-popup-content-wrapper {
+  background-color: rgba(15, 23, 42, 0.95);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+  color: #e2e8f0;
+}
+
+.leaflet-popup-tip {
+  background-color: rgba(15, 23, 42, 0.95);
+}
+
+.leaflet-control-zoom a {
+  background-color: rgba(255, 255, 255, 0.05) !important;
+  backdrop-filter: blur(12px);
+  color: #e2e8f0 !important;
+  border-color: rgba(255, 255, 255, 0.1) !important;
+}
+
+.leaflet-control-zoom a:hover {
+  background-color: rgba(255, 255, 255, 0.1) !important;
+}
+
+/* Custom marker styles */
+.custom-marker {
+  background: none !important;
+  border: none !important;
+}
+
+/* Smooth animations */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.3s ease-out;
+}
+
+/* Scrollbar thin utility */
+.scrollbar-thin::-webkit-scrollbar {
+  width: 4px;
+}
+
+/* Recharts tooltip styling for dark theme */
+.recharts-tooltip-wrapper {
+  outline: none;
+}
+
+.recharts-default-tooltip {
+  background-color: rgba(15, 23, 42, 0.95) !important;
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  border-radius: 12px !important;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3) !important;
+}
+
+.recharts-tooltip-label {
+  color: #94a3b8 !important;
+  font-weight: 500;
+}
+
+.recharts-tooltip-item {
+  color: #e2e8f0 !important;
+}

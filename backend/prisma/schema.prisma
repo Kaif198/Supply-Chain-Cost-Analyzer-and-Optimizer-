@@ -1,0 +1,206 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(uuid())
+  username  String   @unique
+  password  String   // bcrypt hashed
+  email     String   @unique
+  role      String   @default("user")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("users")
+}
+
+model Premise {
+  id           String   @id @default(uuid())
+  name         String
+  category     String   // nightclub, gym, retail, restaurant, hotel
+  address      String
+  latitude     Float
+  longitude    Float
+  elevation    Float    @default(0)
+  weeklyDemand Int      // number of cases
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  deliveriesFrom Delivery[]  @relation("DeliveryOrigin")
+  deliveriesTo   Delivery[]  @relation("DeliveryDestination")
+  routeStops     RouteStop[]
+
+  @@index([category])
+  @@index([latitude, longitude])
+  @@map("premises")
+}
+
+model Vehicle {
+  id                   String   @id @default(uuid())
+  name                 String
+  type                 String   // small_van, medium_truck, large_truck
+  capacity             Int      // number of cases
+  fuelConsumptionRate  Float    // liters per km
+  co2EmissionRate      Float    // kg per km
+  hourlyLaborCost      Float    // euros per hour
+  fixedCostPerDelivery Float    // euros
+  createdAt            DateTime @default(now())
+  updatedAt            DateTime @updatedAt
+
+  deliveries Delivery[]
+  routes     Route[]
+
+  @@map("vehicles")
+}
+
+model Warehouse {
+  id        String   @id @default(uuid())
+  name      String
+  address   String
+  latitude  Float
+  longitude Float
+  elevation Float    @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("warehouses")
+}
+
+model Delivery {
+  id            String   @id @default(uuid())
+  originId      String
+  destinationId String
+  vehicleId     String
+  demand        Int      // number of cases
+  distance      Float    // km
+  duration      Float    // hours
+  fuelCost      Float    // euros
+  laborCost     Float    // euros
+  vehicleCost   Float    // euros
+  carbonCost    Float    // euros
+  totalCost     Float    // euros
+  co2Emissions  Float    // kg
+  isAlpine      Boolean  @default(false)
+  hasOvertime   Boolean  @default(false)
+  deliveryDate  DateTime
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  origin      Premise @relation("DeliveryOrigin", fields: [originId], references: [id])
+  destination Premise @relation("DeliveryDestination", fields: [destinationId], references: [id])
+  vehicle     Vehicle @relation(fields: [vehicleId], references: [id])
+
+  @@index([deliveryDate])
+  @@index([vehicleId])
+  @@index([originId])
+  @@index([destinationId])
+  @@map("deliveries")
+}
+
+model Route {
+  id            String   @id @default(uuid())
+  vehicleId     String
+  mode          String   // fastest, cheapest, greenest, balanced
+  totalDistance Float    // km
+  totalCost     Float    // euros
+  totalDuration Float    // hours
+  totalCO2      Float    // kg
+  routeDate     DateTime
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  vehicle Vehicle     @relation(fields: [vehicleId], references: [id])
+  stops   RouteStop[]
+
+  @@index([routeDate])
+  @@index([vehicleId])
+  @@map("routes")
+}
+
+model RouteStop {
+  id        String   @id @default(uuid())
+  routeId   String
+  premiseId String
+  sequence  Int      // order in route
+  distance  Float    // km from previous stop
+  cost      Float    // euros for this segment
+  duration  Float    // hours for this segment
+  co2       Float    // kg for this segment
+  createdAt DateTime @default(now())
+
+  route   Route   @relation(fields: [routeId], references: [id], onDelete: Cascade)
+  premise Premise @relation(fields: [premiseId], references: [id])
+
+  @@unique([routeId, sequence])
+  @@index([routeId])
+  @@map("route_stops")
+}
+
+model TrafficCondition {
+  id               String   @id @default(uuid())
+  routeSegmentId   String
+  fromLatitude     Float
+  fromLongitude    Float
+  toLatitude       Float
+  toLongitude      Float
+  congestionLevel  String   // none, light, moderate, heavy, severe
+  averageSpeed     Float    // km/h
+  delayMinutes     Int
+  source           String
+  timestamp        DateTime @default(now())
+  createdAt        DateTime @default(now())
+
+  @@index([routeSegmentId])
+  @@index([timestamp])
+  @@index([fromLatitude, fromLongitude, toLatitude, toLongitude])
+  @@map("traffic_conditions")
+}
+
+model WeatherCondition {
+  id            String   @id @default(uuid())
+  locationId    String
+  latitude      Float
+  longitude     Float
+  elevation     Int?
+  temperature   Float    // Celsius
+  precipitation Float    // mm/h
+  windSpeed     Float    // km/h
+  visibility    Int      // meters
+  conditions    String   // clear, cloudy, rain, snow, fog, storm
+  severity      String   // normal, caution, warning, severe
+  forecastHours Int      @default(0) // 0 for current, >0 for forecast
+  timestamp     DateTime @default(now())
+  createdAt     DateTime @default(now())
+
+  @@index([locationId])
+  @@index([timestamp])
+  @@index([latitude, longitude])
+  @@index([forecastHours])
+  @@map("weather_conditions")
+}
+
+model FuelPrice {
+  id             String   @id @default(uuid())
+  region         String
+  fuelType       String   // diesel, gasoline, electric
+  pricePerLiter  Float    // EUR
+  stationName    String?
+  latitude       Float?
+  longitude      Float?
+  source         String
+  timestamp      DateTime @default(now())
+  createdAt      DateTime @default(now())
+
+  @@index([region, fuelType])
+  @@index([timestamp])
+  @@index([latitude, longitude])
+  @@map("fuel_prices")
+}

@@ -1,0 +1,19 @@
+services:
+  # Backend API Service
+  - type: web
+    name: red-bull-backend
+    env: node
+    region: frankfurt
+    plan: free
+    buildCommand: cd backend && npm install && npx prisma generate && npm run build
+    startCommand: cd backend && npm start
+    envVars:
+      - key: DATABASE_URL
+        sync: false
+      - key: JWT_SECRET
+        generateValue: true
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 3000
+    healthCheckPath: /health

@@ -53,11 +53,11 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec, {
 }));
 
 // Health check endpoints (no rate limiting)
-app.get('/health', (_req, res) => {
+app.get('/health', (_req: express.Request, res: express.Response) => {
   res.json({ status: 'ok', timestamp: new Date().toISOString() });
 });
 
-app.get('/ready', (_req, res) => {
+app.get('/ready', (_req: express.Request, res: express.Response) => {
   // Check if services are ready (database, redis, etc.)
   res.json({ status: 'ready', timestamp: new Date().toISOString() });
 });

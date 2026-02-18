@@ -1,6 +1,6 @@
-// @ts-ignore
-const apiUrl = import.meta.env?.VITE_API_URL || '/api';
+// Production backend URL - change this if your backend URL changes
+const BACKEND_URL = 'https://supply-chain-cost-analyzer-and-optimizer.onrender.com/api';
 
 export const config = {
-    apiUrl,
+    apiUrl: BACKEND_URL,
 };

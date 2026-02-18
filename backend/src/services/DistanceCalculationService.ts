@@ -1,4 +1,4 @@
-import { Coordinates, DistanceResult, BearingResult } from '../types/coordinates';
+import { Coordinates, BearingResult } from '../types/coordinates';
 
 /**
  * DistanceCalculationService

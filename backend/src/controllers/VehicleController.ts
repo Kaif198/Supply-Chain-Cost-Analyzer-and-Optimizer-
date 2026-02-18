@@ -17,7 +17,7 @@ export class VehicleController {
    * GET /api/vehicles
    * List all vehicles
    */
-  static async list(req: Request, res: Response): Promise<void> {
+  static async list(_req: Request, res: Response): Promise<void> {
     try {
       const vehicles = await VehicleController.vehicleRepository.findAll();
       res.json(vehicles);

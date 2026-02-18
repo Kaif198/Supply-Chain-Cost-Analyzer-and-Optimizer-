@@ -18,7 +18,7 @@ export const rateLimiter = rateLimit({
   },
   standardHeaders: true, // Return rate limit info in the `RateLimit-*` headers
   legacyHeaders: false, // Disable the `X-RateLimit-*` headers
-  handler: (req: Request, res: Response) => {
+  handler: (_req: Request, res: Response) => {
     res.status(429).json({
       error: {
         code: 'RATE_LIMIT_EXCEEDED',
@@ -49,7 +49,7 @@ export const corsMiddleware = cors({
  * Input sanitization middleware
  * Removes potentially dangerous characters from string inputs
  */
-export const sanitizeInput = (req: Request, res: Response, next: NextFunction): void => {
+export const sanitizeInput = (req: Request, _res: Response, next: NextFunction): void => {
   const sanitizeValue = (value: any): any => {
     if (typeof value === 'string') {
       // Remove SQL injection patterns

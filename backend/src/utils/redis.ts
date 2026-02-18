@@ -16,7 +16,7 @@ export class CacheClient {
         url: process.env.REDIS_URL || 'redis://localhost:6379',
         socket: {
           connectTimeout: 3000, // 3 second timeout
-          reconnectStrategy: (retries) => {
+          reconnectStrategy: (retries: number) => {
             if (retries >= 3) {
               // Stop trying after 3 attempts — Redis is likely intentionally off
               console.warn('[Redis] Not available — running without cache.');

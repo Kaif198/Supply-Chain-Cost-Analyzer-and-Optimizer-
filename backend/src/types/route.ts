@@ -1,4 +1,3 @@
-import { Coordinates } from './coordinates';
 import { Vehicle } from './cost';
 
 export type OptimizationMode = 'fastest' | 'cheapest' | 'greenest' | 'balanced';

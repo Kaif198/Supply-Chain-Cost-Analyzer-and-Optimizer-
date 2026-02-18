@@ -1,25 +1,19 @@
-import { Client, TravelMode, DirectionsRoute } from '@googlemaps/google-maps-services-js';
 import { Coordinates } from '../types/coordinates';
 
 /**
  * GoogleMapsService
  * 
- * Provides real-world routing and distance calculations using Google Maps API.
- * Falls back to Haversine calculation if API is unavailable or not configured.
+ * Placeholder service for Google Maps integration.
+ * Currently not used - the app uses Haversine distance calculations.
+ * To enable: Install @googlemaps/google-maps-services-js and add GOOGLE_MAPS_API_KEY to .env
  */
 export class GoogleMapsService {
-  private client: Client;
-  private apiKey: string | undefined;
   private isEnabled: boolean;
 
   constructor() {
-    this.client = new Client({});
-    this.apiKey = process.env.GOOGLE_MAPS_API_KEY;
-    this.isEnabled = !!this.apiKey;
+    this.isEnabled = false; // Disabled - Google Maps not installed
 
-    if (!this.isEnabled) {
-      console.warn('[GoogleMaps] API key not configured. Using Haversine fallback.');
-    }
+    console.warn('[GoogleMaps] Service disabled. Using Haversine distance calculations.');
   }
 
   /**
@@ -33,46 +27,8 @@ export class GoogleMapsService {
     from: Coordinates,
     to: Coordinates
   ): Promise<{ distance: number; duration: number; polyline?: string }> {
-    if (!this.isEnabled || !this.apiKey) {
-      // Fallback to Haversine
-      return this.haversineFallback(from, to);
-    }
-
-    try {
-      const response = await this.client.directions({
-        params: {
-          origin: `${from.latitude},${from.longitude}`,
-          destination: `${to.latitude},${to.longitude}`,
-          mode: TravelMode.driving,
-          key: this.apiKey,
-        },
-        timeout: 5000, // 5 second timeout
-      });
-
-      if (response.data.status === 'OK' && response.data.routes.length > 0) {
-        const route = response.data.routes[0];
-        const leg = route.legs[0];
-
-        // Distance in kilometers
-        const distance = leg.distance.value / 1000;
-        
-        // Duration in hours
-        const duration = leg.duration.value / 3600;
-
-        // Encoded polyline for map visualization
-        const polyline = route.overview_polyline.points;
-
-        console.log(`[GoogleMaps] Route calculated: ${distance.toFixed(2)}km, ${duration.toFixed(2)}h`);
-
-        return { distance, duration, polyline };
-      } else {
-        console.warn(`[GoogleMaps] API returned status: ${response.data.status}. Using fallback.`);
-        return this.haversineFallback(from, to);
-      }
-    } catch (error) {
-      console.error('[GoogleMaps] API error:', error);
-      return this.haversineFallback(from, to);
-    }
+    // Always use Haversine fallback since Google Maps is not installed
+    return this.haversineFallback(from, to);
   }
 
   /**
@@ -84,67 +40,15 @@ export class GoogleMapsService {
    */
   async calculateMultiWaypointRoute(
     waypoints: Coordinates[],
-    optimize: boolean = false
+    _optimize: boolean = false
   ): Promise<{
     distance: number;
     duration: number;
     waypointOrder?: number[];
     polyline?: string;
   }> {
-    if (!this.isEnabled || !this.apiKey || waypoints.length < 2) {
-      return this.multiWaypointFallback(waypoints);
-    }
-
-    try {
-      const origin = waypoints[0];
-      const destination = waypoints[waypoints.length - 1];
-      const intermediateWaypoints = waypoints.slice(1, -1);
-
-      const response = await this.client.directions({
-        params: {
-          origin: `${origin.latitude},${origin.longitude}`,
-          destination: `${destination.latitude},${destination.longitude}`,
-          waypoints: intermediateWaypoints.map(
-            (w) => `${w.latitude},${w.longitude}`
-          ),
-          optimize_waypoints: optimize,
-          mode: TravelMode.driving,
-          key: this.apiKey,
-        },
-        timeout: 10000, // 10 second timeout for complex routes
-      });
-
-      if (response.data.status === 'OK' && response.data.routes.length > 0) {
-        const route = response.data.routes[0];
-        
-        // Sum up all legs
-        let totalDistance = 0;
-        let totalDuration = 0;
-
-        for (const leg of route.legs) {
-          totalDistance += leg.distance.value / 1000; // km
-          totalDuration += leg.duration.value / 3600; // hours
-        }
-
-        const polyline = route.overview_polyline.points;
-        const waypointOrder = route.waypoint_order;
-
-        console.log(`[GoogleMaps] Multi-waypoint route: ${totalDistance.toFixed(2)}km, ${totalDuration.toFixed(2)}h`);
-
-        return {
-          distance: totalDistance,
-          duration: totalDuration,
-          waypointOrder,
-          polyline,
-        };
-      } else {
-        console.warn(`[GoogleMaps] Multi-waypoint API returned: ${response.data.status}. Using fallback.`);
-        return this.multiWaypointFallback(waypoints);
-      }
-    } catch (error) {
-      console.error('[GoogleMaps] Multi-waypoint API error:', error);
-      return this.multiWaypointFallback(waypoints);
-    }
+    // Always use Haversine fallback since Google Maps is not installed
+    return this.multiWaypointFallback(waypoints);
   }
 
   /**

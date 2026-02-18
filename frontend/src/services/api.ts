@@ -18,10 +18,9 @@ import type {
     Route,
     PaginatedResponse,
 } from '../types/types';
-import { config } from './config.js';
 
 const api = axios.create({
-    baseURL: config.apiUrl,
+    baseURL: 'https://supply-chain-cost-analyzer-and-optimizer.onrender.com/api',
     headers: { 'Content-Type': 'application/json' },
 });
 

@@ -18,9 +18,10 @@ import type {
     Route,
     PaginatedResponse,
 } from '../types/types';
+import { config } from './config';
 
 const api = axios.create({
-    baseURL: (import.meta as any).env?.VITE_API_URL || '/api',
+    baseURL: config.apiUrl,
     headers: { 'Content-Type': 'application/json' },
 });
 

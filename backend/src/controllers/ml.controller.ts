@@ -37,7 +37,7 @@ export class MLController {
         }
     }
 
-    static async getSupplierReliability(req: Request, res: Response) {
+    static async getSupplierReliability(_req: Request, res: Response) {
         try {
             // Forward the dashboard request to the specific endpoint
             const response = await axios.get(`${ML_SERVICE_URL}/predict/dashboard-reliability`);
@@ -51,7 +51,7 @@ export class MLController {
         }
     }
 
-    static async getModelPerformance(req: Request, res: Response) {
+    static async getModelPerformance(_req: Request, res: Response) {
         try {
             const response = await axios.get(`${ML_SERVICE_URL}/model/performance`);
             res.json(response.data);

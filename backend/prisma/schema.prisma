@@ -204,3 +204,31 @@ model FuelPrice {
   @@index([latitude, longitude])
   @@map("fuel_prices")
 }
+
+model InventoryChainRecord {
+  id             String   @id @default(uuid())
+  deliveryId     String
+  itemId         String
+  fromLocation   String
+  toLocation     String
+  quantity       Float
+  movementType   String
+  txHash         String   @unique
+  blockNumber    Int
+  movementHash   String
+  verifiedAt     DateTime?
+  createdAt      DateTime @default(now())
+
+  @@map("inventory_chain_records")
+}
+
+model InventoryAlert {
+  id          String   @id @default(uuid())
+  itemId      String
+  alertType   String
+  description String
+  resolved    Boolean  @default(false)
+  createdAt   DateTime @default(now())
+
+  @@map("inventory_alerts")
+}

@@ -10,6 +10,7 @@ const NAV_ITEMS = [
     { to: '/premises', label: 'Premises', icon: '🏢' },
     { to: '/deliveries', label: 'Deliveries', icon: '📦' },
     { to: '/fleet', label: 'Fleet', icon: '🚛' },
+    { to: '/inventory-chain', label: 'Chain of Custody', icon: '🔗' },
     { to: '/settings', label: 'Settings', icon: '⚙️' },
 ];
 

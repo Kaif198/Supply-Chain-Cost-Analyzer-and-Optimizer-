@@ -1,0 +1,20 @@
+{
+    "name": "blockchain-inventory",
+    "version": "1.0.0",
+    "description": "Hardhat project for Red Bull Supply Chain Inventory Tracking",
+    "scripts": {
+        "test": "hardhat test",
+        "compile": "hardhat compile",
+        "deploy": "hardhat run scripts/deploy.ts --network localhost",
+        "node": "hardhat node"
+    },
+    "devDependencies": {
+        "@nomicfoundation/hardhat-toolbox": "^4.0.0",
+        "hardhat": "^2.19.0",
+        "ts-node": "^10.9.1",
+        "typescript": "^5.3.3"
+    },
+    "dependencies": {
+        "dotenv": "^16.3.1"
+    }
+}

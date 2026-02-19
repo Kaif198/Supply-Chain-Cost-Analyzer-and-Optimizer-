@@ -4,6 +4,7 @@ import { CostCalculationService } from '../services/CostCalculationService';
 import { DeliveryRepository } from '../repositories/DeliveryRepository';
 import { PremiseRepository } from '../repositories/PremiseRepository';
 import { VehicleRepository } from '../repositories/VehicleRepository';
+import { InventoryChainService } from '../services/inventory-chain.service';
 
 // Validation schemas
 const calculateCostSchema = z.object({
@@ -111,7 +112,7 @@ export class DeliveryController {
     try {
       // Validate request body
       const validation = calculateCostSchema.safeParse(req.body);
-      
+
       if (!validation.success) {
         res.status(400).json({
           error: {
@@ -310,7 +311,7 @@ export class DeliveryController {
     try {
       // Validate query parameters
       const validation = listDeliveriesSchema.safeParse(req.query);
-      
+
       if (!validation.success) {
         res.status(400).json({
           error: {
@@ -434,7 +435,7 @@ export class DeliveryController {
     try {
       // Validate request body
       const validation = createDeliverySchema.safeParse(req.body);
-      
+
       if (!validation.success) {
         res.status(400).json({
           error: {
@@ -536,6 +537,17 @@ export class DeliveryController {
         hasOvertime: costBreakdown.hasOvertime,
         deliveryDate: new Date(deliveryDate),
       });
+
+      // Blockchain Hook: Record dispatched movement
+      // Assuming 'demand' is quantity and item is generic 'Red Bull Case' for this demo
+      InventoryChainService.recordMovement({
+        deliveryId: delivery.id,
+        itemId: `ITEM-${delivery.id.substring(0, 8)}`, // Simulated Item ID
+        fromLocation: origin.id,
+        toLocation: destination.id,
+        quantity: demand,
+        movementType: 'DISPATCHED'
+      }).catch(err => console.error('Blockchain hook failed:', err));
 
       res.status(201).json(delivery);
     } catch (error) {

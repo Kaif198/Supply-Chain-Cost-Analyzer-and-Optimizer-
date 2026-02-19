@@ -11,6 +11,7 @@ import { RouteController } from './controllers/RouteController';
 import { PremiseController } from './controllers/PremiseController';
 import { VehicleController } from './controllers/VehicleController';
 import { AnalyticsController } from './controllers/AnalyticsController';
+import inventoryChainRoutes from './routes/inventory-chain.routes';
 import { authenticate } from './middleware/auth';
 
 dotenv.config();
@@ -97,6 +98,12 @@ app.get('/api/analytics/top-routes', authenticate, AnalyticsController.getTopRou
 app.get('/api/analytics/top-premises', authenticate, AnalyticsController.getTopPremises);
 app.post('/api/analytics/export', authenticate, AnalyticsController.export);
 
+// Inventory Chain routes
+app.use('/api/inventory-chain', inventoryChainRoutes);
+
+// 404 handler for undefined routes
+app.use('/api/inventory-chain', inventoryChainRoutes);
+
 // 404 handler for undefined routes
 app.use(notFoundHandler);
 
@@ -105,6 +112,12 @@ app.use(errorHandler);
 
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
+
+  // Initialize Blockchain Service
+  // Using the hardcoded values from the service file for this local demo
+  import('./services/inventory-chain.service').then(({ InventoryChainService }) => {
+    InventoryChainService.initialize();
+  });
 });
 
 export default app;

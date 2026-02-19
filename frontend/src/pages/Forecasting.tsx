@@ -1,24 +1,24 @@
 import { useState, useEffect } from 'react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Area } from 'recharts';
 import { formatCurrency } from '../utils/utils';
-import axios from 'axios';
+import api from '../services/api';
 
 // API Service
 const mlApi = {
     getDemandForecast: async (days: number) => {
-        const res = await axios.get(`http://localhost:3000/api/ml/demand-forecast?days=${days}`);
+        const res = await api.get(`/ml/demand-forecast?days=${days}`);
         return res.data;
     },
     getSpendForecast: async (days: number) => {
-        const res = await axios.get(`http://localhost:3000/api/ml/spend-forecast?days=${days}`);
+        const res = await api.get(`/ml/spend-forecast?days=${days}`);
         return res.data;
     },
     getReliability: async () => {
-        const res = await axios.get(`http://localhost:3000/api/ml/supplier-reliability`);
+        const res = await api.get(`/ml/supplier-reliability`);
         return res.data;
     },
     getPerformance: async () => {
-        const res = await axios.get(`http://localhost:3000/api/ml/performance`);
+        const res = await api.get(`/ml/performance`);
         return res.data;
     }
 };
@@ -200,8 +200,8 @@ export default function ForecastingPage() {
                                     <td className="px-4 py-3 font-medium text-white">{row.route}</td>
                                     <td className="px-4 py-3 text-right">
                                         <span className={`px-2 py-1 rounded text-xs font-bold ${row.score > 80 ? 'bg-emerald-500/20 text-emerald-400' :
-                                                row.score > 60 ? 'bg-amber-500/20 text-amber-400' :
-                                                    'bg-red-500/20 text-red-500'
+                                            row.score > 60 ? 'bg-amber-500/20 text-amber-400' :
+                                                'bg-red-500/20 text-red-500'
                                             }`}>
                                             {row.score}%
                                         </span>

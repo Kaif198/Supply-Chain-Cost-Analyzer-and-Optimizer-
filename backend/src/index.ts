@@ -12,6 +12,7 @@ import { PremiseController } from './controllers/PremiseController';
 import { VehicleController } from './controllers/VehicleController';
 import { AnalyticsController } from './controllers/AnalyticsController';
 import inventoryChainRoutes from './routes/inventory-chain.routes';
+import { mlRoutes } from './routes/ml.routes';
 import { authenticate } from './middleware/auth';
 
 dotenv.config();
@@ -101,8 +102,8 @@ app.post('/api/analytics/export', authenticate, AnalyticsController.export);
 // Inventory Chain routes
 app.use('/api/inventory-chain', inventoryChainRoutes);
 
-// 404 handler for undefined routes
-app.use('/api/inventory-chain', inventoryChainRoutes);
+// ML routes
+app.use('/api/ml', mlRoutes);
 
 // 404 handler for undefined routes
 app.use(notFoundHandler);

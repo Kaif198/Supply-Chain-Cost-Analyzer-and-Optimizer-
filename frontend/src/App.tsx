@@ -17,6 +17,7 @@ const DeliveryHistoryPage = lazy(() => import('./pages/DeliveryHistoryPage'));
 const VehicleFleetPage = lazy(() => import('./pages/VehicleFleetPage'));
 const SettingsPage = lazy(() => import('./pages/SettingsPage'));
 const InventoryChainPage = lazy(() => import('./pages/InventoryChain'));
+const ForecastingPage = lazy(() => import('./pages/Forecasting'));
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -121,6 +122,14 @@ function App() {
                 element={
                   <Suspense fallback={<LoadingFallback />}>
                     <InventoryChainPage />
+                  </Suspense>
+                }
+              />
+              <Route
+                path="forecasting"
+                element={
+                  <Suspense fallback={<LoadingFallback />}>
+                    <ForecastingPage />
                   </Suspense>
                 }
               />

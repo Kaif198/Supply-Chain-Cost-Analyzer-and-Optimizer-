@@ -242,8 +242,8 @@ Private project - All rights reserved
 ## 👤 Author
 
 **Your Name**
-- GitHub: [@yourusername](https://github.com/yourusername)
-- LinkedIn: [Your LinkedIn](https://linkedin.com/in/yourprofile)
+- Mohammed Kaif Ahmed
+- LinkedIn: [www.linkedin.com/in/kaif-ahmed-bb972421a)
 
 ## 🙏 Acknowledgments
 

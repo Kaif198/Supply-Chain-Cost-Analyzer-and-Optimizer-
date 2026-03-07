@@ -44,7 +44,7 @@ export default function InventoryMovementMap({ movements }: InventoryMovementMap
     }, [movements, premises]);
 
     return (
-        <div className="h-[400px] w-full rounded-2xl overflow-hidden border border-white/10 z-0 relative">
+        <div className="h-[400px] w-full rounded-2xl overflow-hidden border border-slate-200 shadow-card z-0 relative">
             <MapContainer
                 center={AUSTRIA_CENTER}
                 zoom={7}
@@ -53,7 +53,7 @@ export default function InventoryMovementMap({ movements }: InventoryMovementMap
             >
                 <TileLayer
                     attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-                    url="https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png"
+                    url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                 />
 
                 {movementLines.map((line, idx) => (

@@ -18,10 +18,6 @@ export default function BlockchainAuditTable() {
     const [records, setRecords] = useState<AuditRecord[]>([]);
 
     useEffect(() => {
-        // In real implementation, fetch from backend
-        // fetch('/api/inventory-chain/audit-log', ...)
-        // Simulating empty state or mock data for now if needed, 
-        // but the backend integration is ready.
         if (token) {
             fetch('http://localhost:3000/api/inventory-chain/audit-log', {
                 headers: { 'Authorization': `Bearer ${token}` }
@@ -35,18 +31,18 @@ export default function BlockchainAuditTable() {
     }, [token]);
 
     return (
-        <div className="bg-white/5 border border-white/10 rounded-2xl overflow-hidden">
-            <div className="p-6 border-b border-white/10 flex justify-between items-center">
-                <h3 className="text-lg font-bold text-white">Live Blockchain Ledger</h3>
-                <span className="flex items-center gap-2 text-xs text-green-400 bg-green-500/10 px-3 py-1 rounded-full border border-green-500/20">
-                    <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
+        <div className="bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-card">
+            <div className="p-6 border-b border-slate-100 flex justify-between items-center">
+                <h3 className="text-lg font-bold text-slate-800">Live Blockchain Ledger</h3>
+                <span className="flex items-center gap-2 text-xs text-emerald-600 bg-emerald-50 px-3 py-1 rounded-full border border-emerald-200">
+                    <span className="w-2 h-2 bg-emerald-500 rounded-full animate-pulse" />
                     Live Sync
                 </span>
             </div>
 
             <div className="overflow-x-auto">
                 <table className="w-full text-left">
-                    <thead className="bg-white/5 text-slate-400 text-xs uppercase font-medium">
+                    <thead className="bg-slate-50 text-slate-500 text-xs uppercase font-medium">
                         <tr>
                             <th className="px-6 py-4">Item ID</th>
                             <th className="px-6 py-4">Movement</th>
@@ -57,25 +53,25 @@ export default function BlockchainAuditTable() {
                             <th className="px-6 py-4">Status</th>
                         </tr>
                     </thead>
-                    <tbody className="divide-y divide-white/5">
+                    <tbody className="divide-y divide-slate-100">
                         {records.length === 0 ? (
                             <tr>
-                                <td colSpan={7} className="px-6 py-8 text-center text-slate-500 italic">
+                                <td colSpan={7} className="px-6 py-8 text-center text-slate-400 italic">
                                     No transactions recorded yet. Create a delivery to generate blockchain records.
                                 </td>
                             </tr>
                         ) : (
                             records.map((record) => (
-                                <tr key={record.id} className="text-sm text-slate-300 hover:bg-white/5 transition-colors">
+                                <tr key={record.id} className="text-sm text-slate-600 hover:bg-slate-50 transition-colors duration-150">
                                     <td className="px-6 py-4 font-mono text-xs">{record.itemId}</td>
                                     <td className="px-6 py-4">
                                         <div className="flex flex-col">
-                                            <span className="text-white font-medium">{record.movementType}</span>
-                                            <span className="text-xs text-slate-500">{record.fromLocation.slice(0, 8)}... → {record.toLocation.slice(0, 8)}...</span>
+                                            <span className="text-slate-800 font-medium">{record.movementType}</span>
+                                            <span className="text-xs text-slate-400">{record.fromLocation.slice(0, 8)}... → {record.toLocation.slice(0, 8)}...</span>
                                         </div>
                                     </td>
                                     <td className="px-6 py-4">{record.quantity}</td>
-                                    <td className="px-6 py-4 font-mono text-xs text-blue-400 truncate max-w-[150px]">
+                                    <td className="px-6 py-4 font-mono text-xs text-blue-600 truncate max-w-[150px]">
                                         {record.txHash}
                                     </td>
                                     <td className="px-6 py-4 font-mono text-xs">{record.blockNumber}</td>
@@ -83,7 +79,7 @@ export default function BlockchainAuditTable() {
                                         {new Date(record.createdAt).toLocaleTimeString()}
                                     </td>
                                     <td className="px-6 py-4">
-                                        <span className="px-2 py-0.5 rounded text-xs bg-green-500/20 text-green-400 border border-green-500/30">
+                                        <span className="px-2 py-0.5 rounded text-xs bg-emerald-50 text-emerald-600 border border-emerald-200">
                                             Confirmed
                                         </span>
                                     </td>

@@ -7,27 +7,27 @@ export default function SettingsPage() {
         <div className="space-y-6 animate-fade-in max-w-2xl">
             {/* Header */}
             <div>
-                <h1 className="text-2xl font-bold text-white">Settings</h1>
-                <p className="text-slate-400 text-sm mt-1">
+                <h1 className="text-2xl font-bold text-slate-800">Settings</h1>
+                <p className="text-slate-500 text-sm mt-1">
                     Account information and application settings
                 </p>
             </div>
 
             {/* Profile Card */}
-            <div className="bg-slate-800/50 border border-white/5 rounded-2xl p-6">
-                <h2 className="text-sm font-semibold text-slate-300 uppercase tracking-wider mb-4">
+            <div className="bg-white border border-slate-200 rounded-2xl p-6 shadow-card">
+                <h2 className="text-sm font-semibold text-slate-500 uppercase tracking-wider mb-4">
                     Profile
                 </h2>
 
                 <div className="flex items-center gap-4 mb-6">
-                    <div className="w-16 h-16 bg-redbull-red/20 rounded-2xl flex items-center justify-center">
+                    <div className="w-16 h-16 bg-redbull-red/10 rounded-2xl flex items-center justify-center">
                         <span className="text-redbull-red font-bold text-2xl">
                             {user?.username?.charAt(0).toUpperCase() || 'U'}
                         </span>
                     </div>
                     <div>
-                        <p className="text-white font-semibold text-lg">{user?.username}</p>
-                        <p className="text-slate-400 text-sm">{user?.email}</p>
+                        <p className="text-slate-800 font-semibold text-lg">{user?.username}</p>
+                        <p className="text-slate-500 text-sm">{user?.email}</p>
                     </div>
                 </div>
 
@@ -40,8 +40,8 @@ export default function SettingsPage() {
             </div>
 
             {/* Application Info */}
-            <div className="bg-slate-800/50 border border-white/5 rounded-2xl p-6">
-                <h2 className="text-sm font-semibold text-slate-300 uppercase tracking-wider mb-4">
+            <div className="bg-white border border-slate-200 rounded-2xl p-6 shadow-card">
+                <h2 className="text-sm font-semibold text-slate-500 uppercase tracking-wider mb-4">
                     Application
                 </h2>
                 <div className="space-y-3">
@@ -53,8 +53,8 @@ export default function SettingsPage() {
             </div>
 
             {/* System Status */}
-            <div className="bg-slate-800/50 border border-white/5 rounded-2xl p-6">
-                <h2 className="text-sm font-semibold text-slate-300 uppercase tracking-wider mb-4">
+            <div className="bg-white border border-slate-200 rounded-2xl p-6 shadow-card">
+                <h2 className="text-sm font-semibold text-slate-500 uppercase tracking-wider mb-4">
                     System Status
                 </h2>
                 <div className="space-y-3">
@@ -70,9 +70,9 @@ export default function SettingsPage() {
 
 function InfoRow({ label, value }: { label: string; value: string }) {
     return (
-        <div className="flex items-center justify-between py-2 border-b border-white/5 last:border-0">
-            <span className="text-sm text-slate-400">{label}</span>
-            <span className="text-sm text-white font-medium">{value}</span>
+        <div className="flex items-center justify-between py-2 border-b border-slate-100 last:border-0">
+            <span className="text-sm text-slate-500">{label}</span>
+            <span className="text-sm text-slate-800 font-medium">{value}</span>
         </div>
     );
 }
@@ -90,11 +90,11 @@ function StatusRow({ label, status }: { label: string; status: 'online' | 'offli
     };
 
     return (
-        <div className="flex items-center justify-between py-2 border-b border-white/5 last:border-0">
-            <span className="text-sm text-slate-400">{label}</span>
+        <div className="flex items-center justify-between py-2 border-b border-slate-100 last:border-0">
+            <span className="text-sm text-slate-500">{label}</span>
             <div className="flex items-center gap-2">
                 <div className={`w-2 h-2 rounded-full ${colors[status]}`} />
-                <span className="text-sm text-white">{labels[status]}</span>
+                <span className="text-sm text-slate-700">{labels[status]}</span>
             </div>
         </div>
     );

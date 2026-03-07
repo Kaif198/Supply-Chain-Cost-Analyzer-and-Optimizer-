@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useAuth } from '../hooks/useAuth';
 import ChainOfCustodyTimeline from '../components/inventory-chain/ChainOfCustodyTimeline';
 import InventoryMovementMap from '../components/inventory-chain/InventoryMovementMap';
@@ -8,11 +8,6 @@ import InventoryAlertPanel from '../components/inventory-chain/InventoryAlertPan
 
 export default function InventoryChainPage() {
     const { token } = useAuth();
-    // Simulate fetching "latest" item for demo or handle search
-    // For this page, we might just show recent audit logs and a verifier
-    // Or we could have a "Track Item" input at the top which drives the Timeline/Map.
-
-    // For the demo, let's have a "Track Item" state
     const [searchId, setSearchId] = useState('');
     const [searchedmovements, setSearchedMovements] = useState<any[]>([]);
 
@@ -29,13 +24,13 @@ export default function InventoryChainPage() {
     };
 
     return (
-        <div className="space-y-8 pb-10">
+        <div className="space-y-8 pb-10 animate-fade-in">
             {/* Header */}
             <div>
-                <h1 className="text-3xl font-bold text-white flex items-center gap-3">
-                    <span className="text-4xl">⛓️</span> Chain of Custody
+                <h1 className="text-3xl font-bold text-slate-800 flex items-center gap-3">
+                    Chain of Custody
                 </h1>
-                <p className="text-slate-400 mt-2">
+                <p className="text-slate-500 mt-2">
                     Immutable inventory tracking secured by the InventoryTracker Smart Contract.
                 </p>
             </div>
@@ -47,19 +42,19 @@ export default function InventoryChainPage() {
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
                 <IntegrityVerifier />
 
-                <div className="bg-redbull-dark-blue border border-white/10 rounded-2xl p-6 shadow-xl flex flex-col">
-                    <h3 className="text-xl font-bold text-white mb-4">📍 Track Specific Item</h3>
+                <div className="bg-white border border-slate-200 rounded-2xl p-6 shadow-card flex flex-col">
+                    <h3 className="text-xl font-bold text-slate-800 mb-4">Track Specific Item</h3>
                     <div className="flex gap-3 mb-4">
                         <input
                             type="text"
                             placeholder="Search Item ID..."
-                            className="flex-1 bg-slate-900/50 border border-white/10 rounded-xl px-4 py-2 text-white"
+                            className="flex-1 bg-slate-50 border border-slate-200 rounded-xl px-4 py-2 text-slate-700 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-redbull-red/30 transition-all duration-200"
                             value={searchId}
                             onChange={(e) => setSearchId(e.target.value)}
                         />
                         <button
                             onClick={handleSearch}
-                            className="bg-blue-600 hover:bg-blue-500 text-white px-4 py-2 rounded-xl transition-colors"
+                            className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-xl transition-all duration-200"
                         >
                             Trace
                         </button>
@@ -69,14 +64,14 @@ export default function InventoryChainPage() {
                             <ChainOfCustodyTimeline movements={searchedmovements} />
                         </div>
                     ) : (
-                        <div className="flex-1 flex items-center justify-center text-slate-500 text-sm border-2 border-dashed border-white/5 rounded-xl">
+                        <div className="flex-1 flex items-center justify-center text-slate-400 text-sm border-2 border-dashed border-slate-200 rounded-xl">
                             Enter an Item ID to visualize its journey.
                         </div>
                     )}
                 </div>
             </div>
 
-            {/* Map Visualization (if search results exist, show their path) */}
+            {/* Map Visualization */}
             {searchedmovements.length > 0 && (
                 <InventoryMovementMap movements={searchedmovements} />
             )}

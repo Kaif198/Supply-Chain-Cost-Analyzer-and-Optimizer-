@@ -32,9 +32,9 @@ export function formatDate(dateStr: string): string {
 
 export function formatCO2(kg: number): string {
     if (kg >= 1000) {
-        return `${(kg / 1000).toFixed(2)} t CO₂`;
+        return `${(kg / 1000).toFixed(2)} t CO2`;
     }
-    return `${kg.toFixed(1)} kg CO₂`;
+    return `${kg.toFixed(1)} kg CO2`;
 }
 
 export function getCategoryColor(category: string): string {
@@ -50,11 +50,11 @@ export function getCategoryColor(category: string): string {
 
 export function getCategoryIcon(category: string): string {
     const icons: Record<string, string> = {
-        nightclub: '🎵',
-        gym: '💪',
-        retail: '🛒',
-        restaurant: '🍽️',
-        hotel: '🏨',
+        nightclub: 'NC',
+        gym: 'GY',
+        retail: 'RT',
+        restaurant: 'RS',
+        hotel: 'HT',
     };
-    return icons[category] || '📍';
+    return icons[category] || '--';
 }

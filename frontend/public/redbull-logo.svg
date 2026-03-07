@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 200">
+  <defs>
+    <style>
+      .rb-red { fill: #DC0032; }
+      .rb-yellow { fill: #FFC906; }
+    </style>
+  </defs>
+  <!-- Yellow sun circle -->
+  <circle cx="120" cy="100" r="75" class="rb-yellow"/>
+  <!-- Left bull -->
+  <g class="rb-red" transform="translate(30, 40) scale(0.6)">
+    <path d="M180 50c-20-30-60-40-90-30-15 5-25 15-35 25-5 5-10 15-15 25-10 25-5 55 10 75 10 15 25 25 45 30 15 5 30 5 45 0 20-5 35-20 45-40 10-25 10-55-5-85z"/>
+    <path d="M50 80c-10-5-20-5-30 0-10 10-15 25-10 40 5 10 15 20 30 20 10 0 15-5 15-15-5-15-5-30-5-45z"/>
+  </g>
+  <!-- Right bull (mirrored) -->
+  <g class="rb-red" transform="translate(240, 40) scale(-0.6, 0.6)">
+    <path d="M180 50c-20-30-60-40-90-30-15 5-25 15-35 25-5 5-10 15-15 25-10 25-5 55 10 75 10 15 25 25 45 30 15 5 30 5 45 0 20-5 35-20 45-40 10-25 10-55-5-85z"/>
+    <path d="M50 80c-10-5-20-5-30 0-10 10-15 25-10 40 5 10 15 20 30 20 10 0 15-5 15-15-5-15-5-30-5-45z"/>
+  </g>
+  <!-- Red Bull text -->
+  <text x="280" y="130" font-family="'Arial Black', 'Impact', sans-serif" font-weight="900" font-size="72" class="rb-red" letter-spacing="2">Red Bull</text>
+</svg>

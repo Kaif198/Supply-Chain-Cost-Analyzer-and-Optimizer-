@@ -14,8 +14,8 @@
 body {
   margin: 0;
   min-height: 100vh;
-  background-color: #0f172a;
-  color: #e2e8f0;
+  background-color: #f8f9fb;
+  color: #1e293b;
 }
 
 /* Custom scrollbar */
@@ -37,34 +37,34 @@ body {
   background: #b00028;
 }
 
-/* Leaflet overrides for dark theme */
+/* Leaflet overrides for light theme */
 .leaflet-container {
-  background-color: #1e293b;
+  background-color: #f1f5f9;
   font-family: 'Inter', sans-serif;
 }
 
 .leaflet-popup-content-wrapper {
-  background-color: rgba(15, 23, 42, 0.95);
+  background-color: rgba(255, 255, 255, 0.97);
   backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid #e2e8f0;
   border-radius: 12px;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
-  color: #e2e8f0;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+  color: #1e293b;
 }
 
 .leaflet-popup-tip {
-  background-color: rgba(15, 23, 42, 0.95);
+  background-color: rgba(255, 255, 255, 0.97);
 }
 
 .leaflet-control-zoom a {
-  background-color: rgba(255, 255, 255, 0.05) !important;
+  background-color: rgba(255, 255, 255, 0.95) !important;
   backdrop-filter: blur(12px);
-  color: #e2e8f0 !important;
-  border-color: rgba(255, 255, 255, 0.1) !important;
+  color: #334155 !important;
+  border-color: #e2e8f0 !important;
 }
 
 .leaflet-control-zoom a:hover {
-  background-color: rgba(255, 255, 255, 0.1) !important;
+  background-color: #f1f5f9 !important;
 }
 
 /* Custom marker styles */
@@ -73,39 +73,74 @@ body {
   border: none !important;
 }
 
+/* Smooth transitions — global */
+* {
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
 /* Smooth animations */
 @keyframes fadeIn {
   from { opacity: 0; transform: translateY(8px); }
   to { opacity: 1; transform: translateY(0); }
 }
 
-.animate-fade-in {
-  animation: fadeIn 0.3s ease-out;
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: translateY(0); }
 }
+
+.animate-fade-in {
+  animation: fadeIn 0.4s cubic-bezier(0.4, 0, 0.2, 1) both;
+}
+
+.animate-slide-up {
+  animation: slideUp 0.5s cubic-bezier(0.4, 0, 0.2, 1) both;
+}
+
+/* Staggered fade-in for children */
+.stagger-children > * {
+  animation: fadeIn 0.4s cubic-bezier(0.4, 0, 0.2, 1) both;
+}
+.stagger-children > *:nth-child(1) { animation-delay: 0.05s; }
+.stagger-children > *:nth-child(2) { animation-delay: 0.1s; }
+.stagger-children > *:nth-child(3) { animation-delay: 0.15s; }
+.stagger-children > *:nth-child(4) { animation-delay: 0.2s; }
+.stagger-children > *:nth-child(5) { animation-delay: 0.25s; }
 
 /* Scrollbar thin utility */
 .scrollbar-thin::-webkit-scrollbar {
   width: 4px;
 }
 
-/* Recharts tooltip styling for dark theme */
+/* Recharts tooltip styling for light theme */
 .recharts-tooltip-wrapper {
   outline: none;
 }
 
 .recharts-default-tooltip {
-  background-color: rgba(15, 23, 42, 0.95) !important;
+  background-color: rgba(255, 255, 255, 0.97) !important;
   backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  border: 1px solid #e2e8f0 !important;
   border-radius: 12px !important;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3) !important;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08) !important;
 }
 
 .recharts-tooltip-label {
-  color: #94a3b8 !important;
+  color: #64748b !important;
   font-weight: 500;
 }
 
 .recharts-tooltip-item {
-  color: #e2e8f0 !important;
+  color: #1e293b !important;
+}
+
+/* Smooth page transitions */
+main {
+  animation: fadeIn 0.35s cubic-bezier(0.4, 0, 0.2, 1) both;
+}
+
+/* Select/option styling for light mode */
+select option {
+  background-color: #ffffff;
+  color: #1e293b;
 }

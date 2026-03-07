@@ -4,12 +4,6 @@ import { vehicleApi } from '../services/api';
 import { formatCurrency } from '../utils/utils';
 import type { Vehicle } from '../types/types';
 
-const VEHICLE_ICONS: Record<string, string> = {
-    small_van: '🚐',
-    medium_truck: '🚛',
-    large_truck: '🚚',
-};
-
 const VEHICLE_LABELS: Record<string, string> = {
     small_van: 'Small Van',
     medium_truck: 'Medium Truck',
@@ -17,9 +11,15 @@ const VEHICLE_LABELS: Record<string, string> = {
 };
 
 const VEHICLE_COLORS: Record<string, string> = {
-    small_van: 'from-emerald-500/20 to-emerald-600/5 border-emerald-500/20',
-    medium_truck: 'from-blue-500/20 to-blue-600/5 border-blue-500/20',
-    large_truck: 'from-purple-500/20 to-purple-600/5 border-purple-500/20',
+    small_van: 'from-emerald-50 to-emerald-25 border-emerald-200',
+    medium_truck: 'from-blue-50 to-blue-25 border-blue-200',
+    large_truck: 'from-purple-50 to-purple-25 border-purple-200',
+};
+
+const VEHICLE_ICON_COLORS: Record<string, string> = {
+    small_van: 'text-emerald-600',
+    medium_truck: 'text-blue-600',
+    large_truck: 'text-purple-600',
 };
 
 export default function VehicleFleetPage() {
@@ -50,8 +50,8 @@ export default function VehicleFleetPage() {
         <div className="space-y-6 animate-fade-in">
             {/* Header */}
             <div>
-                <h1 className="text-2xl font-bold text-white">Vehicle Fleet</h1>
-                <p className="text-slate-400 text-sm mt-1">
+                <h1 className="text-2xl font-bold text-slate-800">Vehicle Fleet</h1>
+                <p className="text-slate-500 text-sm mt-1">
                     Manage vehicle specifications and cost parameters
                 </p>
             </div>
@@ -65,31 +65,35 @@ export default function VehicleFleetPage() {
 
             {/* Error */}
             {error && (
-                <div className="bg-red-500/10 border border-red-500/20 rounded-2xl p-6 text-center">
-                    <p className="text-red-400">Failed to load vehicles</p>
+                <div className="bg-red-50 border border-red-200 rounded-2xl p-6 text-center">
+                    <p className="text-red-600">Failed to load vehicles</p>
                 </div>
             )}
 
             {/* Vehicle Grid */}
             {!isLoading && !error && vehicles && (
-                <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 stagger-children">
                     {vehicles.map((v) => (
                         <div
                             key={v.id}
-                            className={`bg-gradient-to-br ${VEHICLE_COLORS[v.type] || 'from-slate-500/20 to-slate-600/5 border-slate-500/20'} border rounded-2xl p-6 hover:shadow-lg transition-all duration-300`}
+                            className={`bg-gradient-to-br ${VEHICLE_COLORS[v.type] || 'from-slate-50 to-slate-25 border-slate-200'} border rounded-2xl p-6 hover:shadow-card-hover transition-all duration-300 shadow-card`}
                         >
                             {/* Header */}
                             <div className="flex items-start justify-between mb-5">
                                 <div className="flex items-center gap-3">
-                                    <span className="text-3xl">{VEHICLE_ICONS[v.type] || '🚗'}</span>
+                                    <div className={`w-10 h-10 rounded-xl flex items-center justify-center bg-white shadow-sm ${VEHICLE_ICON_COLORS[v.type] || 'text-slate-600'}`}>
+                                        <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                                            <path strokeLinecap="round" strokeLinejoin="round" d="M8 7h8m-8 4h8m-6 4h4M5 3h14a2 2 0 012 2v14a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2z" />
+                                        </svg>
+                                    </div>
                                     <div>
-                                        <h3 className="text-white font-semibold text-lg">{v.name}</h3>
-                                        <p className="text-slate-400 text-xs">{VEHICLE_LABELS[v.type] || v.type}</p>
+                                        <h3 className="text-slate-800 font-semibold text-lg">{v.name}</h3>
+                                        <p className="text-slate-500 text-xs">{VEHICLE_LABELS[v.type] || v.type}</p>
                                     </div>
                                 </div>
                                 <button
                                     onClick={() => setEditingVehicle({ ...v })}
-                                    className="p-2 rounded-xl text-slate-400 hover:text-white hover:bg-white/10 transition-colors"
+                                    className="p-2 rounded-xl text-slate-400 hover:text-slate-700 hover:bg-white/50 transition-all duration-200"
                                     title="Edit"
                                 >
                                     <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -102,7 +106,7 @@ export default function VehicleFleetPage() {
                             <div className="grid grid-cols-2 gap-3">
                                 <Stat label="Capacity" value={`${v.capacity.toLocaleString()} cases`} />
                                 <Stat label="Fuel Rate" value={`${v.fuelConsumptionRate} L/km`} />
-                                <Stat label="CO₂ Rate" value={`${v.co2EmissionRate} kg/km`} />
+                                <Stat label="CO2 Rate" value={`${v.co2EmissionRate} kg/km`} />
                                 <Stat label="Labor Cost" value={`${formatCurrency(v.hourlyLaborCost)}/hr`} />
                                 <Stat label="Fixed Cost" value={`${formatCurrency(v.fixedCostPerDelivery)}/trip`} />
                             </div>
@@ -113,12 +117,12 @@ export default function VehicleFleetPage() {
 
             {/* Edit Modal */}
             {editingVehicle && (
-                <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm">
-                    <div className="bg-slate-800 border border-white/10 rounded-2xl p-6 w-full max-w-md mx-4 shadow-2xl">
-                        <h2 className="text-lg font-semibold text-white mb-1">
+                <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/20 backdrop-blur-sm transition-all duration-300">
+                    <div className="bg-white border border-slate-200 rounded-2xl p-6 w-full max-w-md mx-4 shadow-2xl animate-fade-in">
+                        <h2 className="text-lg font-semibold text-slate-800 mb-1">
                             Edit {editingVehicle.name}
                         </h2>
-                        <p className="text-slate-400 text-xs mb-5">
+                        <p className="text-slate-500 text-xs mb-5">
                             Adjust cost and emission parameters
                         </p>
 
@@ -129,17 +133,17 @@ export default function VehicleFleetPage() {
                                 onChange={(v) => setEditingVehicle({ ...editingVehicle, fuelConsumptionRate: v })}
                             />
                             <Field
-                                label="CO₂ Emission Rate (kg/km)"
+                                label="CO2 Emission Rate (kg/km)"
                                 value={editingVehicle.co2EmissionRate}
                                 onChange={(v) => setEditingVehicle({ ...editingVehicle, co2EmissionRate: v })}
                             />
                             <Field
-                                label="Hourly Labor Cost (€)"
+                                label="Hourly Labor Cost (EUR)"
                                 value={editingVehicle.hourlyLaborCost}
                                 onChange={(v) => setEditingVehicle({ ...editingVehicle, hourlyLaborCost: v })}
                             />
                             <Field
-                                label="Fixed Cost per Delivery (€)"
+                                label="Fixed Cost per Delivery (EUR)"
                                 value={editingVehicle.fixedCostPerDelivery}
                                 onChange={(v) => setEditingVehicle({ ...editingVehicle, fixedCostPerDelivery: v })}
                             />
@@ -148,16 +152,16 @@ export default function VehicleFleetPage() {
                         <div className="flex gap-3 mt-6">
                             <button
                                 onClick={() => setEditingVehicle(null)}
-                                className="flex-1 px-4 py-2.5 text-sm text-slate-300 border border-white/10 rounded-xl hover:bg-white/5 transition-colors"
+                                className="flex-1 px-4 py-2.5 text-sm text-slate-600 border border-slate-200 rounded-xl hover:bg-slate-50 transition-all duration-200"
                             >
                                 Cancel
                             </button>
                             <button
                                 onClick={handleSave}
                                 disabled={saving}
-                                className="flex-1 px-4 py-2.5 text-sm text-white bg-redbull-red rounded-xl hover:bg-redbull-red/90 disabled:opacity-50 transition-colors font-medium"
+                                className="flex-1 px-4 py-2.5 text-sm text-white bg-redbull-red rounded-xl hover:bg-red-700 disabled:opacity-50 transition-all duration-200 font-medium"
                             >
-                                {saving ? 'Saving…' : 'Save Changes'}
+                                {saving ? 'Saving...' : 'Save Changes'}
                             </button>
                         </div>
                     </div>
@@ -169,9 +173,9 @@ export default function VehicleFleetPage() {
 
 function Stat({ label, value }: { label: string; value: string }) {
     return (
-        <div className="bg-black/20 rounded-xl px-3 py-2.5">
-            <p className="text-[10px] text-slate-500 uppercase tracking-wider mb-0.5">{label}</p>
-            <p className="text-sm text-white font-medium">{value}</p>
+        <div className="bg-white/60 rounded-xl px-3 py-2.5 border border-white/80">
+            <p className="text-[10px] text-slate-400 uppercase tracking-wider mb-0.5">{label}</p>
+            <p className="text-sm text-slate-700 font-medium">{value}</p>
         </div>
     );
 }
@@ -179,13 +183,13 @@ function Stat({ label, value }: { label: string; value: string }) {
 function Field({ label, value, onChange }: { label: string; value: number; onChange: (v: number) => void }) {
     return (
         <div>
-            <label className="block text-xs text-slate-400 mb-1.5">{label}</label>
+            <label className="block text-xs text-slate-500 mb-1.5">{label}</label>
             <input
                 type="number"
                 step="0.01"
                 value={value}
                 onChange={(e) => onChange(parseFloat(e.target.value) || 0)}
-                className="w-full bg-slate-700/50 border border-white/10 rounded-xl px-3 py-2.5 text-sm text-white focus:outline-none focus:ring-2 focus:ring-redbull-red/50"
+                className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2.5 text-sm text-slate-700 focus:outline-none focus:ring-2 focus:ring-redbull-red/30 transition-all duration-200"
             />
         </div>
     );

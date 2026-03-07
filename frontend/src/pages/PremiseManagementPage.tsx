@@ -64,8 +64,8 @@ export default function PremiseManagementPage() {
     const validateForm = (): string | null => {
         if (!form.name.trim()) return 'Name is required';
         if (!form.address.trim()) return 'Address is required';
-        if (form.latitude < 46.4 || form.latitude > 49.0) return 'Latitude must be between 46.4° and 49.0° (Austria)';
-        if (form.longitude < 9.5 || form.longitude > 17.2) return 'Longitude must be between 9.5° and 17.2° (Austria)';
+        if (form.latitude < 46.4 || form.latitude > 49.0) return 'Latitude must be between 46.4 and 49.0 (Austria)';
+        if (form.longitude < 9.5 || form.longitude > 17.2) return 'Longitude must be between 9.5 and 17.2 (Austria)';
         if (form.weeklyDemand < 1) return 'Weekly demand must be a positive integer';
         return null;
     };
@@ -99,15 +99,15 @@ export default function PremiseManagementPage() {
     };
 
     return (
-        <div className="max-w-7xl mx-auto space-y-6">
+        <div className="max-w-7xl mx-auto space-y-6 animate-fade-in">
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
                 <div>
-                    <h1 className="text-2xl font-bold text-white">Premise Management</h1>
-                    <p className="text-slate-400 mt-1">{premises.length} premises total</p>
+                    <h1 className="text-2xl font-bold text-slate-800">Premise Management</h1>
+                    <p className="text-slate-500 mt-1">{premises.length} premises total</p>
                 </div>
                 <button
                     onClick={openCreate}
-                    className="px-5 py-2.5 bg-redbull-red hover:bg-red-600 text-white font-semibold rounded-xl transition-all duration-200 shadow-lg shadow-redbull-red/20 hover:shadow-redbull-red/30 text-sm"
+                    className="px-5 py-2.5 bg-redbull-red hover:bg-red-700 text-white font-semibold rounded-xl transition-all duration-200 shadow-md hover:shadow-lg text-sm"
                 >
                     + Add Premise
                 </button>
@@ -120,22 +120,22 @@ export default function PremiseManagementPage() {
                     placeholder="Search by name..."
                     value={search}
                     onChange={(e) => { setSearch(e.target.value); setPage(0); }}
-                    className="flex-1 px-4 py-2.5 bg-white/5 border border-white/10 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-redbull-red/50 transition-all text-sm"
+                    className="flex-1 px-4 py-2.5 bg-white border border-slate-200 rounded-xl text-slate-700 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-redbull-red/30 transition-all duration-200 text-sm"
                 />
                 <select
                     value={categoryFilter}
                     onChange={(e) => { setCategoryFilter(e.target.value); setPage(0); }}
-                    className="px-4 py-2.5 bg-white/5 border border-white/10 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-redbull-red/50 transition-all text-sm"
+                    className="px-4 py-2.5 bg-white border border-slate-200 rounded-xl text-slate-700 focus:outline-none focus:ring-2 focus:ring-redbull-red/30 transition-all duration-200 text-sm"
                 >
-                    <option value="" className="bg-slate-800">All categories</option>
+                    <option value="">All categories</option>
                     {CATEGORIES.map((c) => (
-                        <option key={c} value={c} className="bg-slate-800 capitalize">{c}</option>
+                        <option key={c} value={c} className="capitalize">{c}</option>
                     ))}
                 </select>
             </div>
 
             {/* Table */}
-            <div className="bg-white/5 backdrop-blur border border-white/10 rounded-2xl overflow-hidden">
+            <div className="bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-card">
                 {isLoading ? (
                     <div className="p-12 flex justify-center">
                         <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-redbull-red" />
@@ -144,7 +144,7 @@ export default function PremiseManagementPage() {
                     <div className="overflow-x-auto">
                         <table className="w-full text-sm">
                             <thead>
-                                <tr className="text-slate-400 text-xs bg-white/5">
+                                <tr className="text-slate-500 text-xs bg-slate-50">
                                     <th className="text-left px-4 py-3">Name</th>
                                     <th className="text-left px-4 py-3">Category</th>
                                     <th className="text-left px-4 py-3 hidden md:table-cell">Address</th>
@@ -156,28 +156,28 @@ export default function PremiseManagementPage() {
                             </thead>
                             <tbody>
                                 {paginated.map((p) => (
-                                    <tr key={p.id} className="border-t border-white/5 hover:bg-white/5 transition-all duration-200">
-                                        <td className="px-4 py-3 text-white font-medium">{p.name}</td>
-                                        <td className="px-4 py-3 text-slate-300">
+                                    <tr key={p.id} className="border-t border-slate-100 hover:bg-slate-50/50 transition-all duration-150">
+                                        <td className="px-4 py-3 text-slate-800 font-medium">{p.name}</td>
+                                        <td className="px-4 py-3 text-slate-600">
                                             <span className="flex items-center gap-1.5">
-                                                {getCategoryIcon(p.category)} {p.category}
+                                                <span className="text-xs font-bold text-slate-400">{getCategoryIcon(p.category)}</span> {p.category}
                                             </span>
                                         </td>
-                                        <td className="px-4 py-3 text-slate-400 hidden md:table-cell truncate max-w-48">{p.address}</td>
-                                        <td className="px-4 py-3 text-right text-slate-300">{p.weeklyDemand}</td>
-                                        <td className="px-4 py-3 text-right text-slate-500 hidden lg:table-cell">{p.latitude.toFixed(4)}</td>
-                                        <td className="px-4 py-3 text-right text-slate-500 hidden lg:table-cell">{p.longitude.toFixed(4)}</td>
+                                        <td className="px-4 py-3 text-slate-500 hidden md:table-cell truncate max-w-48">{p.address}</td>
+                                        <td className="px-4 py-3 text-right text-slate-600">{p.weeklyDemand}</td>
+                                        <td className="px-4 py-3 text-right text-slate-400 hidden lg:table-cell">{p.latitude.toFixed(4)}</td>
+                                        <td className="px-4 py-3 text-right text-slate-400 hidden lg:table-cell">{p.longitude.toFixed(4)}</td>
                                         <td className="px-4 py-3 text-right">
                                             <div className="flex justify-end gap-1">
                                                 <button
                                                     onClick={() => openEdit(p)}
-                                                    className="px-3 py-1.5 bg-blue-500/10 text-blue-400 hover:bg-blue-500/20 rounded-lg text-xs transition-all duration-200"
+                                                    className="px-3 py-1.5 bg-blue-50 text-blue-600 hover:bg-blue-100 rounded-lg text-xs transition-all duration-200"
                                                 >
                                                     Edit
                                                 </button>
                                                 <button
                                                     onClick={() => setDeleteConfirmId(p.id)}
-                                                    className="px-3 py-1.5 bg-red-500/10 text-red-400 hover:bg-red-500/20 rounded-lg text-xs transition-all duration-200"
+                                                    className="px-3 py-1.5 bg-red-50 text-red-600 hover:bg-red-100 rounded-lg text-xs transition-all duration-200"
                                                 >
                                                     Delete
                                                 </button>
@@ -187,7 +187,7 @@ export default function PremiseManagementPage() {
                                 ))}
                                 {paginated.length === 0 && (
                                     <tr>
-                                        <td colSpan={7} className="px-4 py-12 text-center text-slate-500">
+                                        <td colSpan={7} className="px-4 py-12 text-center text-slate-400">
                                             No premises found matching your criteria
                                         </td>
                                     </tr>
@@ -199,24 +199,24 @@ export default function PremiseManagementPage() {
 
                 {/* Pagination */}
                 {totalPages > 1 && (
-                    <div className="flex items-center justify-between px-4 py-3 border-t border-white/5">
-                        <span className="text-slate-500 text-xs">
+                    <div className="flex items-center justify-between px-4 py-3 border-t border-slate-100">
+                        <span className="text-slate-400 text-xs">
                             Page {page + 1} of {totalPages}
                         </span>
                         <div className="flex gap-1">
                             <button
                                 disabled={page === 0}
                                 onClick={() => setPage(page - 1)}
-                                className="px-3 py-1.5 bg-white/5 border border-white/10 rounded-lg text-xs text-slate-300 disabled:opacity-30 hover:bg-white/10 transition-colors"
+                                className="px-3 py-1.5 bg-slate-50 border border-slate-200 rounded-lg text-xs text-slate-600 disabled:opacity-30 hover:bg-slate-100 transition-all duration-200"
                             >
-                                ← Prev
+                                Prev
                             </button>
                             <button
                                 disabled={page >= totalPages - 1}
                                 onClick={() => setPage(page + 1)}
-                                className="px-3 py-1.5 bg-white/5 border border-white/10 rounded-lg text-xs text-slate-300 disabled:opacity-30 hover:bg-white/10 transition-colors"
+                                className="px-3 py-1.5 bg-slate-50 border border-slate-200 rounded-lg text-xs text-slate-600 disabled:opacity-30 hover:bg-slate-100 transition-all duration-200"
                             >
-                                Next →
+                                Next
                             </button>
                         </div>
                     </div>
@@ -225,57 +225,57 @@ export default function PremiseManagementPage() {
 
             {/* Create/Edit Modal */}
             {showModal && (
-                <div className="fixed inset-0 z-50 bg-black/60 flex items-center justify-center p-4">
-                    <div className="bg-slate-800 border border-white/10 rounded-2xl p-6 w-full max-w-lg max-h-[90vh] overflow-y-auto">
-                        <h2 className="text-xl font-bold text-white mb-4">
+                <div className="fixed inset-0 z-50 bg-black/20 backdrop-blur-sm flex items-center justify-center p-4 transition-all duration-300">
+                    <div className="bg-white border border-slate-200 rounded-2xl p-6 w-full max-w-lg max-h-[90vh] overflow-y-auto shadow-2xl animate-fade-in">
+                        <h2 className="text-xl font-bold text-slate-800 mb-4">
                             {editingPremise ? 'Edit Premise' : 'Create Premise'}
                         </h2>
 
                         {formError && (
-                            <div className="mb-4 p-3 bg-red-500/20 border border-red-500/30 rounded-lg text-red-300 text-sm">
+                            <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-lg text-red-600 text-sm">
                                 {formError}
                             </div>
                         )}
 
                         <form onSubmit={handleSubmit} className="space-y-4">
                             <div>
-                                <label className="block text-sm text-slate-300 mb-1">Name *</label>
+                                <label className="block text-sm text-slate-600 mb-1">Name *</label>
                                 <input
                                     type="text"
                                     value={form.name}
                                     onChange={(e) => setForm({ ...form, name: e.target.value })}
-                                    className="w-full px-4 py-2.5 bg-white/5 border border-white/10 rounded-xl text-white text-sm focus:outline-none focus:ring-2 focus:ring-redbull-red/50"
+                                    className="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-slate-700 text-sm focus:outline-none focus:ring-2 focus:ring-redbull-red/30 transition-all duration-200"
                                     required
                                 />
                             </div>
 
                             <div>
-                                <label className="block text-sm text-slate-300 mb-1">Category *</label>
+                                <label className="block text-sm text-slate-600 mb-1">Category *</label>
                                 <select
                                     value={form.category}
                                     onChange={(e) => setForm({ ...form, category: e.target.value })}
-                                    className="w-full px-4 py-2.5 bg-white/5 border border-white/10 rounded-xl text-white text-sm focus:outline-none focus:ring-2 focus:ring-redbull-red/50"
+                                    className="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-slate-700 text-sm focus:outline-none focus:ring-2 focus:ring-redbull-red/30 transition-all duration-200"
                                 >
                                     {CATEGORIES.map((c) => (
-                                        <option key={c} value={c} className="bg-slate-800">{c}</option>
+                                        <option key={c} value={c}>{c}</option>
                                     ))}
                                 </select>
                             </div>
 
                             <div>
-                                <label className="block text-sm text-slate-300 mb-1">Address *</label>
+                                <label className="block text-sm text-slate-600 mb-1">Address *</label>
                                 <input
                                     type="text"
                                     value={form.address}
                                     onChange={(e) => setForm({ ...form, address: e.target.value })}
-                                    className="w-full px-4 py-2.5 bg-white/5 border border-white/10 rounded-xl text-white text-sm focus:outline-none focus:ring-2 focus:ring-redbull-red/50"
+                                    className="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-slate-700 text-sm focus:outline-none focus:ring-2 focus:ring-redbull-red/30 transition-all duration-200"
                                     required
                                 />
                             </div>
 
                             <div className="grid grid-cols-2 gap-3">
                                 <div>
-                                    <label className="block text-sm text-slate-300 mb-1">Latitude * (46.4–49.0)</label>
+                                    <label className="block text-sm text-slate-600 mb-1">Latitude * (46.4-49.0)</label>
                                     <input
                                         type="number"
                                         step="0.0001"
@@ -283,12 +283,12 @@ export default function PremiseManagementPage() {
                                         max="49.0"
                                         value={form.latitude}
                                         onChange={(e) => setForm({ ...form, latitude: parseFloat(e.target.value) })}
-                                        className="w-full px-4 py-2.5 bg-white/5 border border-white/10 rounded-xl text-white text-sm focus:outline-none focus:ring-2 focus:ring-redbull-red/50"
+                                        className="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-slate-700 text-sm focus:outline-none focus:ring-2 focus:ring-redbull-red/30 transition-all duration-200"
                                         required
                                     />
                                 </div>
                                 <div>
-                                    <label className="block text-sm text-slate-300 mb-1">Longitude * (9.5–17.2)</label>
+                                    <label className="block text-sm text-slate-600 mb-1">Longitude * (9.5-17.2)</label>
                                     <input
                                         type="number"
                                         step="0.0001"
@@ -296,7 +296,7 @@ export default function PremiseManagementPage() {
                                         max="17.2"
                                         value={form.longitude}
                                         onChange={(e) => setForm({ ...form, longitude: parseFloat(e.target.value) })}
-                                        className="w-full px-4 py-2.5 bg-white/5 border border-white/10 rounded-xl text-white text-sm focus:outline-none focus:ring-2 focus:ring-redbull-red/50"
+                                        className="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-slate-700 text-sm focus:outline-none focus:ring-2 focus:ring-redbull-red/30 transition-all duration-200"
                                         required
                                     />
                                 </div>
@@ -304,23 +304,23 @@ export default function PremiseManagementPage() {
 
                             <div className="grid grid-cols-2 gap-3">
                                 <div>
-                                    <label className="block text-sm text-slate-300 mb-1">Elevation (m)</label>
+                                    <label className="block text-sm text-slate-600 mb-1">Elevation (m)</label>
                                     <input
                                         type="number"
                                         min="0"
                                         value={form.elevation}
                                         onChange={(e) => setForm({ ...form, elevation: parseInt(e.target.value) || 0 })}
-                                        className="w-full px-4 py-2.5 bg-white/5 border border-white/10 rounded-xl text-white text-sm focus:outline-none focus:ring-2 focus:ring-redbull-red/50"
+                                        className="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-slate-700 text-sm focus:outline-none focus:ring-2 focus:ring-redbull-red/30 transition-all duration-200"
                                     />
                                 </div>
                                 <div>
-                                    <label className="block text-sm text-slate-300 mb-1">Weekly Demand (cases) *</label>
+                                    <label className="block text-sm text-slate-600 mb-1">Weekly Demand (cases) *</label>
                                     <input
                                         type="number"
                                         min="1"
                                         value={form.weeklyDemand}
                                         onChange={(e) => setForm({ ...form, weeklyDemand: parseInt(e.target.value) || 1 })}
-                                        className="w-full px-4 py-2.5 bg-white/5 border border-white/10 rounded-xl text-white text-sm focus:outline-none focus:ring-2 focus:ring-redbull-red/50"
+                                        className="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-slate-700 text-sm focus:outline-none focus:ring-2 focus:ring-redbull-red/30 transition-all duration-200"
                                         required
                                     />
                                 </div>
@@ -330,14 +330,14 @@ export default function PremiseManagementPage() {
                                 <button
                                     type="button"
                                     onClick={() => setShowModal(false)}
-                                    className="flex-1 py-2.5 bg-white/5 border border-white/10 text-slate-300 rounded-xl text-sm hover:bg-white/10 transition-colors"
+                                    className="flex-1 py-2.5 bg-slate-50 border border-slate-200 text-slate-600 rounded-xl text-sm hover:bg-slate-100 transition-all duration-200"
                                 >
                                     Cancel
                                 </button>
                                 <button
                                     type="submit"
                                     disabled={createMutation.isPending || updateMutation.isPending}
-                                    className="flex-1 py-2.5 bg-redbull-red hover:bg-red-600 text-white font-semibold rounded-xl text-sm transition-all disabled:opacity-50"
+                                    className="flex-1 py-2.5 bg-redbull-red hover:bg-red-700 text-white font-semibold rounded-xl text-sm transition-all duration-200 disabled:opacity-50"
                                 >
                                     {createMutation.isPending || updateMutation.isPending ? 'Saving...' : editingPremise ? 'Update' : 'Create'}
                                 </button>
@@ -349,23 +349,23 @@ export default function PremiseManagementPage() {
 
             {/* Delete Confirmation Dialog */}
             {deleteConfirmId && (
-                <div className="fixed inset-0 z-50 bg-black/60 flex items-center justify-center p-4">
-                    <div className="bg-slate-800 border border-white/10 rounded-2xl p-6 w-full max-w-sm">
-                        <h3 className="text-lg font-bold text-white mb-2">Delete Premise?</h3>
-                        <p className="text-slate-400 text-sm mb-6">
+                <div className="fixed inset-0 z-50 bg-black/20 backdrop-blur-sm flex items-center justify-center p-4 transition-all duration-300">
+                    <div className="bg-white border border-slate-200 rounded-2xl p-6 w-full max-w-sm shadow-2xl animate-fade-in">
+                        <h3 className="text-lg font-bold text-slate-800 mb-2">Delete Premise?</h3>
+                        <p className="text-slate-500 text-sm mb-6">
                             This action cannot be undone. The premise and its associations will be permanently removed.
                         </p>
                         <div className="flex gap-3">
                             <button
                                 onClick={() => setDeleteConfirmId(null)}
-                                className="flex-1 py-2.5 bg-white/5 border border-white/10 text-slate-300 rounded-xl text-sm hover:bg-white/10 transition-colors"
+                                className="flex-1 py-2.5 bg-slate-50 border border-slate-200 text-slate-600 rounded-xl text-sm hover:bg-slate-100 transition-all duration-200"
                             >
                                 Cancel
                             </button>
                             <button
                                 onClick={() => handleDelete(deleteConfirmId)}
                                 disabled={deleteMutation.isPending}
-                                className="flex-1 py-2.5 bg-red-600 hover:bg-red-700 text-white font-semibold rounded-xl text-sm transition-all disabled:opacity-50"
+                                className="flex-1 py-2.5 bg-red-600 hover:bg-red-700 text-white font-semibold rounded-xl text-sm transition-all duration-200 disabled:opacity-50"
                             >
                                 {deleteMutation.isPending ? 'Deleting...' : 'Delete'}
                             </button>
